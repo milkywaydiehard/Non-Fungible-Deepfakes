@@ -7,13 +7,16 @@ const injected = new InjectedConnector({
 });
 
 const walletconnect = new WalletConnectConnector({
-  rpcUrl: `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}`,
-  bridge: "https://bridge.walletconnect.org",
+  rpcUrl:
+    "https://matic-mumbai--rpc.datahub.figment.io/apikey/b6cb15f624a2a2f329af7e72c31ddacf",
+  // bridge: "https://bridge.walletconnect.org",
   qrcode: true
 });
 
 const walletlink = new WalletLinkConnector({
-  url: `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}`,
+  // url: `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}`,
+  url:
+    "https://matic-mumbai--rpc.datahub.figment.io/apikey/b6cb15f624a2a2f329af7e72c31ddacf",
   appName: "web3-react-demo"
 });
 
