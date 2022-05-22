@@ -4,10 +4,10 @@ import { useWeb3React } from "@web3-react/core";
 import Unity, { UnityContext } from "react-unity-webgl";
 
 const unityContext = new UnityContext({
-  loaderUrl: "unity/myunityapp.loader.js",
-  dataUrl: "unity/myunityapp.data",
-  frameworkUrl: "unity/myunityapp.framework.js",
-  codeUrl: "unity/myunityapp.wasm"
+  loaderUrl: "unity/unity.loader.js",
+  dataUrl: "unity/unity.data",
+  frameworkUrl: "unity/unity.framework.js",
+  codeUrl: "unity/unity.wasm",
 });
 
 function callUnityFn(account) {
@@ -18,6 +18,14 @@ function callUnityFn(account) {
 export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { account, deactivate, active } = useWeb3React();
+
+
+  unityContext.on("ConnectToWallet", (objectName, callback) => {
+    console.log("UNITY: ConnectToWallet")
+    console.log("objectName: " + objectName + " -- callback: " + callback);
+    // loginHandler();
+    onOpen();
+  });
 
   const getPublicKey = () => {
     if (account) {
@@ -47,8 +55,19 @@ export default function Home() {
           )}
         </HStack>
 
-        {active && (
+        {!active && (
           <HStack>
+
+            <Unity
+                unityContext={unityContext}
+                style={{
+                height: 700,
+                width: 1280,
+                border: "2px solid black",
+                background: "grey",
+                }}
+            />
+
             <Button onClick={getPublicKey}>
               Get Coinbase Wallet Public Key
             </Button>
