@@ -1,7 +1,9 @@
-import { VStack, useDisclosure, Button, HStack } from "@chakra-ui/react";
+// import { VStack, useDisclosure, Button, HStack } from "@chakra-ui/react";
+
 import SelectWalletModal from "./Modal";
 import { useWeb3React } from "@web3-react/core";
 import Unity, { UnityContext } from "react-unity-webgl";
+import { useState } from "react";
 
 const unityContext = new UnityContext({
   loaderUrl: "unity/myunityapp.loader.js",
@@ -11,12 +13,16 @@ const unityContext = new UnityContext({
 });
 
 function callUnityFn(account) {
+  console.log(account);
   // unityContext.send("ConnectToWalletCallback", "callUnityFn", 100);
   unityContext.send("Web3Controller", "ConnectToWalletCallback", account);
 }
 
 export default function Home() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  // const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isOpen, setOpen] = useState();
+  const onOpen = () => setOpen(true);
+  const onClose = () => setOpen(false);
   const { account, deactivate, active } = useWeb3React();
 
   const getPublicKey = () => {
@@ -37,24 +43,15 @@ export default function Home() {
 
   return (
     <>
-      <VStack justifyContent="center" alignItems="center" h="100vh">
-        <HStack marginBottom="10px"></HStack>
-        <HStack>
-          {!active ? (
-            <Button onClick={onOpen}>Connect Wallet</Button>
-          ) : (
-            <Button onClick={disconnect}>Disconnect</Button>
-          )}
-        </HStack>
-
-        {active && (
-          <HStack>
-            <Button onClick={getPublicKey}>
-              Get Coinbase Wallet Public Key
-            </Button>
-          </HStack>
-        )}
-      </VStack>
+      {!active ? (
+        <button onClick={onOpen}>Connect Wallet</button>
+      ) : (
+        <button onClick={disconnect}>Disconnect</button>
+      )}
+      <br />
+      {active && (
+        <button onClick={getPublicKey}>Get Coinbase Wallet Public Key</button>
+      )}
       <SelectWalletModal isOpen={isOpen} closeModal={onClose} />
     </>
   );
